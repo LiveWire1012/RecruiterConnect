@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelp;
+use App\Http\Resources\UserConnectionResource;
 use App\Http\Resources\UserResource;
 use App\Models\Users;
+use App\Services\ConnectionService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -36,4 +37,11 @@ class UserController extends Controller
         $user->update($request->all());
         return ResponseHelp::success();
     }
+
+    public function showAllRequests(Request $request) {
+        $userId = $request->user_id;
+        $requests = ConnectionService::make()->userRequests($userId);
+        return ResponseHelp::success('Success', UserConnectionResource::make($requests));
+    }
+
 }

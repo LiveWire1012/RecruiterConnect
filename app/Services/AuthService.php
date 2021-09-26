@@ -5,11 +5,7 @@ namespace App\Services;
 use App\Models\UserRoles;
 use App\Models\Users;
 
-class AuthService {
-
-    public static function make() {
-        return new static;
-    }
+class AuthService extends BaseService {
 
     public function registerService($userData) {
         $user = Users::where(['mobile' => $userData['mobile'], 'email' => $userData['email']])->first();
