@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelp;
+use App\Models\Users;
+use App\Services\AuthService;
 use Illuminate\Http\Request;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -11,13 +13,15 @@ class AuthController extends Controller
     public function register(Request $request) {
         $userData = $request->all();
         $userData['password'] = bcrypt($request->password);
-        $user = User::create($userData);
-        $accessToken = $user->createToken('authToken')->accessToken;
-        return response(['user' => $user, 'token' => $accessToken]);
+        $user = AuthService::make()->registerService($userData);
+        if(!$user) {
+            return ResponseHelp::error('Another user already exists!');
+        }
+        return ResponseHelp::success('user created successfully');
     }
 
     public function login(Request $request) {
-        $user = User::where('email', $request->email)->first();
+        $user = Users::where('email', $request->email)->first();
         if (empty($user)) {
             return response()->json(['message' => "The given user doesn't exist"]);
         }
