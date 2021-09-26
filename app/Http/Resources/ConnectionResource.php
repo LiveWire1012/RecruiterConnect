@@ -6,16 +6,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ConnectionResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
 
-     */
     public function toArray($request)
     {
         return [
-            'name' => $this->whenLoaded('connectionUser') ? $this->connectionUser->name : '',
+            'name' => $this->relationLoaded('connectionUser') ? $this->connectionUser->name : $this->user->name,
             'mutual_connections' => $this->mutual_connections,
         ];
     }

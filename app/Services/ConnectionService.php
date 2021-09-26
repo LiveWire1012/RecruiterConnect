@@ -8,7 +8,6 @@ use App\Repositories\ConnectionRepo;
 
 class ConnectionService extends BaseService {
 
-
     public function userRequests($userId) {
         [$sentRequests, $mutualConnections, $receivedRequests] = ConnectionRepo::make()->getUserRequests($userId);
         $mutualConnections = $mutualConnections->groupBy('user1');

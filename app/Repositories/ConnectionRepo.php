@@ -19,7 +19,7 @@ class ConnectionRepo extends BaseRepo {
             ->select('rc1.user_id as user1', 'rc2.user_id as user2', 'rc2.connection_id as connection_id', 'ru.name')
             ->get();
 
-        $receivedRequests = UserConnection::with('connectionUser')
+        $receivedRequests = UserConnection::with('user')
             ->where(['connection_id' => $userId, 'status' => UserConnection::STATUS_ACTIVE, 'request_status' => 'PENDING'])->get();
 
         return [$sentRequests, $mutualConnections, $receivedRequests];

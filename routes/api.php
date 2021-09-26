@@ -26,16 +26,16 @@ Route::middleware('auth:api')->group(function() {
     Route::get('get-all-users', [UserController::class, 'getAllUsers']);
     Route::middleware('verify_user')->group(function () {
         Route::prefix('user')->group(function() {
-            Route::get('user-detail/{id}', [UserController::class, 'getUserDetail']);
-            Route::post('delete-user/{id}', [UserController::class, 'deleteUser']);
-            Route::put('update-user/{id}', [UserController::class, 'updateUser']);
-            Route::put('change-user-status/{id}', [UserController::class, 'changeStatus']);
+            Route::get('detail/{id}', [UserController::class, 'getUserDetail']);
+            Route::post('delete/{id}', [UserController::class, 'deleteUser']);
+            Route::put('update/{id}', [UserController::class, 'updateUser']);
+            Route::put('change-status/{id}', [UserController::class, 'changeStatus']);
             Route::get('show-requests', [UserController::class, 'showAllRequests']);
         });
 
         Route::prefix('connect')->group(function () {
-            Route::get('send-request', [ConnectivityController::class, 'connect']);
-            Route::post('delete-request', [ConnectivityController::class, 'deleteRequest']);
+            Route::get('send', [ConnectivityController::class, 'connect']);
+            Route::post('delete', [ConnectivityController::class, 'deleteRequest']);
             Route::put('act-on-request', [ConnectivityController::class, 'actOnRequest']);
         });
     });
