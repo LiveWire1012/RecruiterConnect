@@ -23,7 +23,7 @@ class VerifyUserMiddleware
         if (empty($user)) {
            return ResponseHelp::error("User doesn't Exist", [], 400);
         }
-        $request->request->add(['mobile' => $user->mobile, 'email' => $user->email]);
+        $request->request->add(['user_id' => $user->id, 'mobile' => $user->mobile, 'email' => $user->email]);
         return $next($request);
     }
 }
