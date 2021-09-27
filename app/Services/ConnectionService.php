@@ -8,6 +8,8 @@ use App\Repositories\ConnectionRepo;
 
 class ConnectionService extends BaseService {
 
+    public $error = null;
+
     public function userRequests($userId) {
         [$sentRequests, $mutualConnections, $receivedRequests] = ConnectionRepo::make()->getUserRequests($userId);
         $mutualConnections = $mutualConnections->groupBy('user1');
@@ -31,8 +33,15 @@ class ConnectionService extends BaseService {
     }
 
     public function sendRequest($sourceUserId, $connectionId) {
+        $userRequest = UserConnection::where(['user_id' => $connectionId, 'connection_id' => $sourceUserId])->first();
+        if(!empty($userRequest)) {
+            $this->error = 'Invite Pending from the user';
+            return false;
+        }
+
         $userConnection = UserConnection::firstOrNew(['user_id'  => $sourceUserId, 'connection_id' => $connectionId, 'status' => UserConnection::STATUS_ACTIVE]);
         if(!empty($userConnection)) {
+            $this->error = 'Invite Already sent';
             return false;
         }
         $userConnection->user_id = $sourceUserId;

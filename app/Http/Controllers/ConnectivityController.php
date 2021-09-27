@@ -13,9 +13,10 @@ class ConnectivityController extends Controller
     public function connect(Request $request) {
         $currentUser = Auth::id();
         $connectionId = $request->connection_id;
-        $sendRequest = ConnectionService::make()->sendRequest($currentUser, $connectionId);
+        $connectionService = ConnectionService::make();
+        $sendRequest = $connectionService->sendRequest($currentUser, $connectionId);
         if(!$sendRequest) {
-            return ResponseHelp::error('Invite Already sent');
+            return ResponseHelp::error($connectionService->error);
         }
         return ResponseHelp::success();
     }
